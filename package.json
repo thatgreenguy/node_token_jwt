@@ -1,0 +1,25 @@
+{
+  "name": "node_token_jwt",
+  "version": "1.0.0",
+  "description": "Tutorial for Authenticated Node API App using JWT",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Node",
+    "API",
+    "JWT",
+    "Token",
+    "Authenticated"
+  ],
+  "author": "thatgreenguy",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "jsonwebtoken": "^7.1.9",
+    "mongoose": "^4.6.0",
+    "morgan": "^1.7.0"
+  }
+}
