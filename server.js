@@ -34,8 +34,45 @@ app.use(morgan('dev'));
 // Get an instance of the router for API routes
 var apiRoutes = express.Router();
 
-// TODO: Route to authenticate a user (POST http://localhost:8080/api/authenticate)
+// Route to authenticate a user (POST http://localhost:8080/api/authenticate)
+apiRoutes.post('/authenticate', function(req, res) {
 
+  // First find the user
+  User.findOne({
+    name: req.body.name
+  }, function(err, user) {
+    if (err) throw err;
+
+    if (!user) {
+      res.json({
+        success: false,
+        message: 'Authentication failed. User unknown'
+      });
+    } else {
+
+      // Okay user found so check password matches
+      if (user.password != req.body.password) {
+        res.json({
+          success: false,
+          message: 'Authentication failed. Password incorrect'
+        });
+      } else {
+
+        // Okay user found and password correct so create a token
+        var token = jwt.sign(user, app.get('superSecret'), {
+          expiresIn: 1440
+        });
+
+        // Return the information including token as JSON
+        res.json({
+          success: true,
+          message: 'Have a token!',
+          token: token
+        });
+      }
+    }
+  });
+});
 
 // TODO: Route middleware to verify a token
 
