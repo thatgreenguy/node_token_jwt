@@ -75,7 +75,33 @@ apiRoutes.post('/authenticate', function(req, res) {
 });
 
 // TODO: Route middleware to verify a token
+apiRoutes.use( function(req, res, next) {
 
+  // Check header or url or post parameters for token
+  var token = req.body.token || req.query.token || req.headers['x-access-token'];
+
+  // Decode token
+  if (token) {
+
+    // Verify secret and check expiry
+    jwt.verify(token, app.get('supersecret'), function(err, decoded) {
+      if (err) {
+        return res.json({ success: false, message: 'Invalid Token'})
+      } else {
+        // If token valid save to request for use in other Routes
+        req.decoded = decoded;
+        next();
+      }
+    });
+
+  } else {
+
+    // When no Token supplied return an error
+    return res.json({ success: false, message: 'Token Required' });
+  }
+});
+
+// TODO...
 
 // Route to show a random message (GET http://localhost:8080/api/)
 apiRoutes.get('/', function(req, res){
